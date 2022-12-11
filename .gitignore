@@ -1,0 +1,9 @@
+/app/__pycache__
+node_modules
+.env
+env/
+venv/
+env*
+.vscode
+
+git rm --cached .env
