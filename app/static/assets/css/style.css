@@ -1,0 +1,27 @@
+
+.logo{
+    max-width: 120px;
+    height: auto;
+}
+.bg-light{
+    height: 60px;
+    box-shadow: 0 4px 32px 0 rgba(10,14,29,.02),0 8px 64px 0 rgba(10,14,29,.08);
+}
+.carro{
+    max-width: 100px !important;
+}
+section{
+    padding: 15px 10px;
+    border-radius: 5px;
+    margin: 0 auto;
+    width: 50% !important;
+    background-color: #f2f4f8 !important;
+    margin-bottom: 50px;
+}
+label{
+    float: left !important;
+    padding: 5px;
+}
+.left{
+    float: left;
+}
