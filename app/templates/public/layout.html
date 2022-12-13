@@ -9,17 +9,18 @@
   <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/tooltip.css') }}">
 </head>
 
 <body>
 
-{% include 'public/navbar.html' %}
+  {% include 'public/navbar.html' %}
 
 
   <div class="container text-center">
     <div class="row mb-3">
       <div class="col-md-12">
-        <h1 class="mt-4">Crud con FLASK - PYTHON y MYSQL FÁCIL 
+        <h1 class="mt-4">Crud con FLASK - PYTHON y MYSQL FÁCIL
           <i class="bi bi-braces"></i> 😱
           <hr>
         </h1>
@@ -30,7 +31,8 @@
     <!-- {{ miData }} -->
     <div class="row">
       <div class="col-md-12">
-        <a href="{{ url_for('nuevoCarro') }}" title="Registrar nuevo Carro" class="btn btn-primary btn-lg btn-block btn-sm mb-2" style="float:right">
+        <a href="{{ url_for('addCarro') }}" title="Registrar nuevo Carro"
+          class="btn btn-primary btn-lg btn-block btn-sm mb-2" style="float:right">
           <i class="bi bi-car-front-fill"></i>
           Nuevo Registro
         </a>
@@ -54,7 +56,7 @@
         <tbody>
           {% for carro in miData %}
           {% set urlCarro = 'static/assets/fotos_carros/' %}
-          <tr>
+          <tr id="Registro_{{ carro.id }}">
             <th scope="row">{{ loop.index }}</th>
             <td>{{ carro.marca }}</td>
             <td>{{ carro.modelo }}</td>
@@ -63,18 +65,22 @@
               <img src="{{ urlCarro }}{{ carro.foto }}" class="img-fluid carro" alt="Carro">
             </td>
             <td width="300">
-              <button type="button" class="btn btn-warning btn-sm">
-                <i class="bi bi-eye"></i> 
+              <span style="display: flex; justify-content:space-between;">
+                <a href="{{ url_for('detalleCarro', idCarro = carro.id ) }}" type="button"
+                  class="btn btn-warning btn-sm" tooltip="Ver Registro">
+                  <i class="bi bi-eye"></i>
                   Ver
-              </button>
-              <button type="button" class="btn btn-info btn-sm">
-                <i class="bi bi-arrow-clockwise"></i>
-                Actualizar
-              </button>
-              <button type="button" class="btn btn-danger btn-sm">
-                <i class="bi bi-trash3"></i>
-                Eliminar
-              </button>
+                </a>
+                <a href="{{ url_for('updateCarro', id = carro.id ) }}" class="btn btn-info btn-sm"
+                  tooltip="Actualizar Registro">
+                  <i class="bi bi-arrow-clockwise"></i>
+                  Actualizar
+                </a>
+                <a href="#" onclick="eliminarCarro('{{ carro.id }}');" class="btn btn-danger btn-sm" tooltip="Eliminar Registro">
+                  <i class="bi bi-trash3"></i>
+                  Eliminar
+                </a>
+              </span>
             </td>
           </tr>
           {% endfor %}
@@ -89,18 +95,50 @@
     </div>
     {% endif %}
 
-    
-  {% endblock %}
+
+    {% endblock %}
 
 
   </div>
 
 
-  <script src="{{ url_for('static', filename ='assets/js/bootstrap.min.js') }}"></script>
 
+
+  <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+    crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename ='assets/js/bootstrap.min.js') }}"></script>
+  <script>
+
+    /**Función para eliminar lenguaje desde la Tabla*/
+    function eliminarCarro(id) {
+      let li = document.querySelector('#Registro_' + id);
+
+      var urlForm = "{{ url_for('borrarCarro') }}";
+      $.ajax({
+        type: "POST",
+        data: { id },
+        url: urlForm,
+        success: function (resp) {
+          console.log(resp)
+          const resultado = resp.dataR[1];
+          console.log(resultado)
+
+          if (resultado == 1) {
+            li.remove(); //remuevo el registro desde la lista
+            mensaje(lenguaje); 
+          } else {
+            console.log('Error al intentar borrar el carro ');
+          }
+
+        }
+      });
+
+    }  
+  </script>
 
   <!--👉 Desarrollado por: Urian Viera -->
   <!--👉 Portafolio: https://urianviera.com/ -->
   <!--👉 Github: https://github.com/urian121 -->
 </body>
+
 </html>

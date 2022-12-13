@@ -25,3 +25,16 @@ label{
 .left{
     float: left;
 }
+thead{
+    background-color: lavender !important;
+}
+.list-group-item{
+    display: flex !important;
+}
+.list-group-item strong{
+    padding: 0px 0px 0px 20px !important;
+}
+
+.card{
+    margin: 0 auto !important;
+}

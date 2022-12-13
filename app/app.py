@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from conexionBD import *  #Importando conexion BD
 
 
@@ -7,37 +7,119 @@ app = Flask(__name__)
 application = app
 
 
+
+def listaCarros():
+    conexion_MySQLdb = connectionBD() #creando mi instancia a la conexion de BD
+    cur      = conexion_MySQLdb.cursor(dictionary=True)
+
+    querySQL = f"SELECT * FROM carros ORDER BY id DESC"
+    print(querySQL)
+    cur.execute(querySQL) 
+    resultadoBusqueda = cur.fetchall() #fetchall () Obtener todos los registros
+    totalBusqueda = len(resultadoBusqueda) #Total de busqueda
+    
+    cur.close() #Cerrando conexion SQL
+    conexion_MySQLdb.close() #cerrando conexion de la BD    
+    return resultadoBusqueda
+
+
 #Lista de Carros
 @app.route('/', methods=['GET','POST'])
 def inicio():
-        conexion_MySQLdb = connectionBD() #creando mi instancia a la conexion de BD
-        cur      = conexion_MySQLdb.cursor(dictionary=True)
+    return render_template('public/layout.html', miData = listaCarros())
 
-        querySQL = f"SELECT * FROM carros ORDER BY id DESC"
-        print(querySQL)
-        cur.execute(querySQL) 
-        resultadoBusqueda = cur.fetchall() #fetchall () Obtener todos los registros
-        totalBusqueda = len(resultadoBusqueda) #Total de busqueda
-       
-        cur.close() #Cerrando conexion SQL
-        conexion_MySQLdb.close() #cerrando conexion de la BD
 
-        return render_template('public/layout.html', miData = resultadoBusqueda, total = totalBusqueda)
 
 
 @app.route('/registrar-carro', methods=['GET','POST'])
-def nuevoCarro():
-        return render_template('public/nuevoCarro.html')
+def addCarro():
+        return render_template('public/acciones/add.html')
 
+@app.route('/view-carro', methods=['GET','POST'])
+def viewCarro():
+        return render_template('public/acciones/view.html')
     
+@app.route('/update-carro', methods=['GET','POST'])
+def updateCarro():
+        return render_template('public/acciones/update.html')    
+ 
+ 
+#Registrando nuevo carro
+@app.route('/carro', methods=['POST'])
+def registrarCarro():
+    msg =''
+    if request.method == 'POST':
+        marca               = request.form['marca']
+        modelo              = request.form['modelo']
+        year                = request.form['year']
+        color               = request.form['color']
+        puertas             = request.form['puertas']
+        favorito            = request.form['favorito']
+        
+        conexion_MySQLdb = connectionBD()
+        cursor           = conexion_MySQLdb.cursor(dictionary=True)
+        
+            
+        sql         = ("INSERT INTO carros(marca, modelo, year, color, puertas, favorito) VALUES (%s, %s, %s, %s, %s, %s)")
+        valores     = (marca, modelo, year, color, puertas, favorito)
+        cursor.execute(sql, valores)
+        conexion_MySQLdb.commit()
+        
+        cursor.close() #Cerrando conexion SQL
+        conexion_MySQLdb.close() #cerrando conexion de la BD
+        msg = 'Registro con exito'
+        
+        print(cursor.rowcount, "registro Insertado")
+        print("1 registro insertado, id", cursor.lastrowid)
+  
+        return render_template('public/layout.html', miData = listaCarros(), msg='Formulario enviado')
+    else:
+        return render_template('public/layout.html', msg = 'Metodo HTTP incorrecto')   
+  
+  
+  
+@app.route('/ver-detalles-del-carro/<int:idCarro>', methods=['GET', 'POST'])
+def detalleCarro(idCarro):
+    msg =''
+    if request.method == 'GET':
+        #print(idCarro)
+        conexion_MySQLdb = connectionBD()
+        cursor = conexion_MySQLdb.cursor(dictionary=True)
+        
+        cursor.execute("SELECT * FROM carros WHERE id ='%s'" % (idCarro,))
+        resultadoQuery = cursor.fetchone()
+        
+        cursor.close() #cerrando conexion de la consulta sql
+        conexion_MySQLdb.close() #cerrando conexion de la BD
+        
+        if resultadoQuery:
+            return render_template('public/acciones/view.html', infoCarro = resultadoQuery)
+        else:
+            msg="No exite el Carro"
+            return render_template('public/acciones/layout.html', mensaje = msg, tipo_mensaje = 0)
+    return redirect(url_for('inicio'))
     
+
+#Eliminar carro
+@app.route('/borrar-carro', methods=['GET', 'POST'])
+def borrarCarro():
+    
+    if request.method == 'POST':
+        idCarro    = request.form['id']
+        
+        conexion_MySQLdb = connectionBD() #Hago instancia a mi conexion desde la funcion
+        cur              = conexion_MySQLdb.cursor(dictionary=True)
+        cur.execute('DELETE FROM carros WHERE id=%s', (idCarro,))
+        conexion_MySQLdb.commit()
+        
+        #Nota: retorno solo un json y no una vista para evitar refescar la vista
+        return jsonify(dataR = ["respuesta", 1])
+  
+  
 #Redireccionando cuando la página no existe
 @app.errorhandler(404)
 def not_found(error):
-    if 'conectado' in session:
-        return redirect(url_for('inicio'))
-    else:
-        return render_template('public/index.html')
+    return redirect(url_for('inicio'))
     
     
     

@@ -1,0 +1,85 @@
+{% extends 'public/layout.html' %}
+{% block title %}Registrar Carro{% endblock %}
+
+{% block body %}
+
+
+<section>
+    <h2>
+        <a href="/" class="left" title="Volver"><i class="bi bi-arrow-left-circle"></i></a>
+        Registrar Nuevo Carro
+        <hr>
+    </h2>
+
+    <form action="{{ url_for('registrarCarro') }}" method="POST" class="mb-3" autocomplete="off">
+        <div class="row">
+            <div class="col">
+                <label for="marca">Marca</label>
+                <input type="text" name="marca" class="form-control">
+            </div>
+            <div class="col">
+                <label for="modelo">Modelo</label>
+                <input type="text" name="modelo" class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="year">Año</label>
+                <select name="year" class="form-control">
+                    <option value="">--- Seleccione el año ---</option>
+                    {% for year in range(2022, 2009, -1) %}
+                        <option value="{{ year }} ft"> {{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <label for="color">Color</label>
+                <select name="color" class="form-control">
+                    <option value="">--- Seleccione el Color ---</option>
+                    <option value="Rojo">Rojo</option>
+                    <option value="Gris">Gris</option>
+                    <option value="Blanco">Blanco</option>
+                    <option value="Plata">Plata</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="puertas">Numeros de Puertas</label>
+                <label for="puertas">Color</label>
+                <select name="puertas" class="form-control">
+                    <option value="">--- Seleccione las Puertas ---</option>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+            <div class="col">
+                <label for="puertas">Más Vendido</label>
+                <br><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="favorito" value="Si">
+                    <label class="form-check-label" for="favorito">Si</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="favorito" value="No">
+                    <label class="form-check-label" for="favorito">No</label>
+                </div>
+            </div>
+        </div>
+<!----
+        <div class="row">
+            <div class="col">
+                <label for="foto">Foto del Carro</label>
+                <input type="file" name="foto" class="form-control-file">
+            </div>
+        </div>
+    -->
+
+        <input class="button-primary mt-3 btn btn-info btn-block" type="submit" value="Guardar Registro">
+    </form>
+</section>
+
+{% endblock %}

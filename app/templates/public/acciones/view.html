@@ -1,0 +1,44 @@
+{% extends 'public/layout.html' %}
+{% block title %}Registrar Carro{% endblock %}
+
+{% block body %}
+
+
+<section>
+    <h2>
+        <a href="/" class="left" title="Volver"><i class="bi bi-arrow-left-circle"></i></a>
+        Detalles del Carro
+        <hr>
+    </h2>
+
+    {% if (infoCarro) %}
+    
+    <!-- {{ infoCarro }} -->
+
+      {% set urlCarro = '/static/assets/fotos_carros/' %}
+    <div class="card" style="width: 25rem;">
+        <img src="{{ urlCarro }}{{ infoCarro.foto }}" class="card-img-top" alt="coche">
+        <div class="card-body">
+          <h5 class="card-title"> <strong>{{ infoCarro.marca }}</strong></h5>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Modelo: <strong>{{ infoCarro.modelo }}</strong></li>
+          <li class="list-group-item">Año: <strong>{{ infoCarro.year }}</strong></li>
+          <li class="list-group-item">Color: <strong>{{ infoCarro.color }}</strong></li>
+          <li class="list-group-item">Número de puertas: <strong>{{ infoCarro.puertas }}</strong></li>
+          <li class="list-group-item">Favorito: <strong>{{ infoCarro.favorito }}</strong></li>
+        </ul>
+      </div>
+
+      {% else %}
+      <div class="col-12">
+          <h2 class="text-center">
+              No existe el Coche
+          </h2>
+      </div>
+{% endif %}
+
+</section>
+
+{% endblock %}
