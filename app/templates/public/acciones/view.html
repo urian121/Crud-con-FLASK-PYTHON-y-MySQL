@@ -17,7 +17,13 @@
 
       {% set urlCarro = '/static/assets/fotos_carros/' %}
     <div class="card" style="width: 25rem;">
-        <img src="{{ urlCarro }}{{ infoCarro.foto }}" class="card-img-top" alt="coche">
+
+        {% if(infoCarro.foto) %}
+          <img src="{{ urlCarro }}{{ infoCarro.foto }}" class="card-img-top" alt="coche">
+        {% else %}
+          <img src="{{ urlCarro }}sin_foto.jpg" class="card-img-top sin_foto" alt="coche">
+        {% endif %}
+
         <div class="card-body">
           <h5 class="card-title"> <strong>{{ infoCarro.marca }}</strong></h5>
         </div>

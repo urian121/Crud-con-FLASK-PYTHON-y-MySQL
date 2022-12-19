@@ -1,0 +1,100 @@
+{% extends 'public/layout.html' %}
+{% block title %}Registrar Carro{% endblock %}
+
+{% block body %}
+
+
+<section>
+    <h2>
+        <a href="/" class="left" title="Volver"><i class="bi bi-arrow-left-circle"></i></a>
+        Actualizar Información del Carro
+        <hr>
+    </h2>
+
+    {% if (dataInfo) %}
+    
+     {{ dataInfo }}
+
+      <form action="{{ url_for('recibeActualizarCarro', idCarro = dataInfo.id ) }}" method="POST" class="mb-3" autocomplete="off" enctype="multipart/form-data">
+        <input type="text" class="form-control" name="id" value="{{ dataInfo.id }}" required hidden>
+        
+        <div class="row">
+            <div class="col">
+                <label for="marca">Marca</label>
+                <input type="text" name="marca" value="{{ dataInfo.marca }}" class="form-control">
+            </div>
+            <div class="col">
+                <label for="modelo">Modelo</label>
+                <input type="text" name="modelo" value="{{ dataInfo.modelo }}" class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="year">Año</label>
+                <input type="number" name="year" value="{{ dataInfo.year }}" class="form-control">
+            </div>
+
+            <div class="col">
+                <label for="color">Color</label>
+                {% with  colores = ["Rojo","Gris","Blanco","Plata"] %}
+                <select name="color" class="form-control">
+                    {% for color in colores %}
+                        {% if(color == dataInfo.color) %}
+                            <option value="{{ color }}" selected>{{ color }}</option>
+                        {% else %}
+                            <option value="{{ color }}">{{ color }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                {% endwith %}
+            </div>
+        </div>
+
+        
+        <div class="row">
+            <div class="col">
+                <label for="puertas">Numeros de Puertas</label>
+                {% with  puertas = ['2','4'] %}
+                <select name="puertas" class="form-control">
+                    {% for puerta in puertas %}
+                        {% if(puerta == dataInfo.puertas) %}
+                            <option value="{{ puerta }}" selected> {{ puerta }}</option>
+                        {% else %}
+                            <option value="{{ puerta }}"> {{ puerta }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                {% endwith %}
+            </div>
+
+            <div class="col">
+                <label for="favorito">Favorito</label>
+                <br><br>
+                <div class="form-check form-check-inline">
+
+                    <input class="form-check-input" type="radio" name="favorito" value="Si" {{ dataInfo.favorito =='Si' and 'checked' or '' }}>
+                    <label class="form-check-label" for="favorito">Si</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="favorito" value="No" {{ 'checked' if dataInfo.favorito =='No' else '' }}>
+                    <label class="form-check-label" for="favorito">No</label>
+                </div>
+            </div>
+        </div>
+
+
+        <input class="button-primary mt-3 btn btn-info btn-block" type="submit" value="Guardar Registro">
+    </form>
+
+      {% else %}
+      <div class="col-12">
+          <h2 class="text-center">
+              No existe el Coche
+          </h2>
+      </div>
+{% endif %}
+
+</section>
+
+{% endblock %}

@@ -14,13 +14,14 @@ section{
     padding: 15px 10px;
     border-radius: 5px;
     margin: 0 auto;
-    width: 50% !important;
+    width: 80% !important;
     background-color: #f2f4f8 !important;
     margin-bottom: 50px;
 }
 label{
     float: left !important;
     padding: 5px;
+    margin-top: 6px;
 }
 .left{
     float: left;
@@ -37,4 +38,26 @@ thead{
 
 .card{
     margin: 0 auto !important;
+}
+.sin_foto{
+    width: 200px;
+    margin: 0 auto;
+}
+.sin_foto_mini{
+    padding: 0px;
+    width: 50px;
+    margin: 0 auto;
+}
+.card-img-top{
+    margin: 0 auto;
+    width: 200px;
+}
+.table>tbody {
+    vertical-align: baseline !important;
+}
+input{
+    text-transform: capitalize !important;
+}
+.form-check-inline{
+    float: left;
 }

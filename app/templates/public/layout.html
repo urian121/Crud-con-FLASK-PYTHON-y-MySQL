@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Crud con FLASK - PYTHON y MySQL</title>
   <link rel="shortcut icon" href="{{url_for('static', filename ='assets/imgs/favicon.png')}}" type="image/x-icon">
-  <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/tooltip.css') }}">
 </head>
 
@@ -55,14 +55,18 @@
         </thead>
         <tbody>
           {% for carro in miData %}
-          {% set urlCarro = 'static/assets/fotos_carros/' %}
+          {% with urlCarro = '/static/assets/fotos_carros/' %}
           <tr id="Registro_{{ carro.id }}">
             <th scope="row">{{ loop.index }}</th>
             <td>{{ carro.marca }}</td>
             <td>{{ carro.modelo }}</td>
             <td>{{ carro.year }}</td>
             <td>
-              <img src="{{ urlCarro }}{{ carro.foto }}" class="img-fluid carro" alt="Carro">
+              {% if(carro.foto !="") %}
+                <img src="{{ urlCarro }}{{ carro.foto }}" class="sin_foto_mini" alt="coche">
+              {% else %}
+                <img src="{{ urlCarro }}sin_foto.jpg" class="sin_foto_mini" alt="coche">
+              {% endif %}
             </td>
             <td width="300">
               <span style="display: flex; justify-content:space-between;">
@@ -83,6 +87,7 @@
               </span>
             </td>
           </tr>
+          {% endwith %}
           {% endfor %}
         </tbody>
       </table>

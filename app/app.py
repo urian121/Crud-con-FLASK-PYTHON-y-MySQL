@@ -30,18 +30,28 @@ def inicio():
 
 
 
-
+#RUTAS
 @app.route('/registrar-carro', methods=['GET','POST'])
 def addCarro():
-        return render_template('public/acciones/add.html')
+    return render_template('public/acciones/add.html')
 
-@app.route('/view-carro', methods=['GET','POST'])
-def viewCarro():
-        return render_template('public/acciones/view.html')
-    
-@app.route('/update-carro', methods=['GET','POST'])
-def updateCarro():
-        return render_template('public/acciones/update.html')    
+@app.route('/form-update-carro/<string:id>', methods=['GET','POST'])
+def updateCarro(id):
+    msg =''
+    if request.method == 'GET':
+        conexion_MySQLdb = connectionBD()
+        cursor = conexion_MySQLdb.cursor(dictionary=True)
+        
+        cursor.execute("SELECT * FROM carros WHERE id = %s LIMIT 1", [id])
+        resultData = cursor.fetchone() #Devolviendo solo 1 registro
+        print(resultData)
+        if resultData:
+            return render_template('public/acciones/update.html',  dataInfo = resultData)
+        else:
+            msg="No existe el Carro"
+            return render_template('public/layout.html', miData = listaCarros(), mensaje = msg, tipo_msg = 0)
+            
+    return render_template('public/layout.html',  miData = listaCarros())    
  
  
 #Registrando nuevo carro
@@ -99,6 +109,37 @@ def detalleCarro(idCarro):
             return render_template('public/acciones/layout.html', mensaje = msg, tipo_mensaje = 0)
     return redirect(url_for('inicio'))
     
+
+@app.route('/actualizar-carro/<string:idCarro>', methods=['POST'])
+def  recibeActualizarCarro(idCarro):
+
+    if request.method == 'POST':
+        marca           = request.form['marca']
+        modelo          = request.form['modelo']
+        year            = request.form['year']
+        color           = request.form['color']
+        puertas         = request.form['puertas']
+        favorito        = request.form['favorito']
+        print(idCarro)
+        conexion_MySQLdb = connectionBD()
+        cur = conexion_MySQLdb.cursor(dictionary=True)
+        cur.execute("""
+            UPDATE carros
+            SET 
+                marca   = %s,
+                modelo  = %s,
+                year    = %s,
+                color   = %s,
+                puertas = %s,
+                favorito= %s
+            WHERE id=%s
+            """, (marca,modelo, year, color, puertas, favorito, idCarro ))
+        conexion_MySQLdb.commit()
+        
+        cur.close() #cerrando conexion de la consulta sql
+        conexion_MySQLdb.close() #cerrando conexion de la BD
+    return render_template('public/layout.html', miData = listaCarros())     
+
 
 #Eliminar carro
 @app.route('/borrar-carro', methods=['GET', 'POST'])

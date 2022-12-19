@@ -28,8 +28,8 @@
                 <label for="year">Año</label>
                 <select name="year" class="form-control">
                     <option value="">--- Seleccione el año ---</option>
-                    {% for year in range(2022, 2009, -1) %}
-                        <option value="{{ year }} ft"> {{ year }}</option>
+                    {% for year in range(2022,2009,-1) %}
+                        <option value="{{ year }}"> {{ year }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -48,7 +48,6 @@
         <div class="row">
             <div class="col">
                 <label for="puertas">Numeros de Puertas</label>
-                <label for="puertas">Color</label>
                 <select name="puertas" class="form-control">
                     <option value="">--- Seleccione las Puertas ---</option>
                     <option value="2">2</option>
