@@ -70,17 +70,17 @@
             </td>
             <td width="300">
               <span style="display: flex; justify-content:space-between;">
-                <a href="{{ url_for('detalleCarro', idCarro = carro.id ) }}" type="button"
+                <a href="{{ url_for('viewDetalleCarro', idCarro = carro.id ) }}" type="button"
                   class="btn btn-warning btn-sm" tooltip="Ver Registro">
                   <i class="bi bi-eye"></i>
                   Ver
                 </a>
-                <a href="{{ url_for('updateCarro', id = carro.id ) }}" class="btn btn-info btn-sm"
+                <a href="{{ url_for('formViewUpdate', id = carro.id ) }}" class="btn btn-info btn-sm"
                   tooltip="Actualizar Registro">
                   <i class="bi bi-arrow-clockwise"></i>
                   Actualizar
                 </a>
-                <a href="#" onclick="eliminarCarro('{{ carro.id }}');" class="btn btn-danger btn-sm" tooltip="Eliminar Registro">
+                <a href="#" onclick="eliminarCarroJavaScript('{{ carro.id }}');" class="btn btn-danger btn-sm" tooltip="Eliminar Registro">
                   <i class="bi bi-trash3"></i>
                   Eliminar
                 </a>
@@ -115,26 +115,22 @@
   <script>
 
     /**Función para eliminar lenguaje desde la Tabla*/
-    function eliminarCarro(id) {
+    function eliminarCarroJavaScript(id) {
       let li = document.querySelector('#Registro_' + id);
 
-      var urlForm = "{{ url_for('borrarCarro') }}";
+      var urlForm = "{{ url_for('formViewBorrarCarro') }}";
       $.ajax({
         type: "POST",
         data: { id },
         url: urlForm,
         success: function (resp) {
-          console.log(resp)
-          const resultado = resp.dataR[1];
-          console.log(resultado)
-
+          const resultado = resp.data[1];
           if (resultado == 1) {
             li.remove(); //remuevo el registro desde la lista
-            mensaje(lenguaje); 
+           // mensaje(lenguaje); 
           } else {
             console.log('Error al intentar borrar el carro ');
           }
-
         }
       });
 

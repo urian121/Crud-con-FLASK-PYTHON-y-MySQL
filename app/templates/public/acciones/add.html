@@ -11,7 +11,7 @@
         <hr>
     </h2>
 
-    <form action="{{ url_for('registrarCarro') }}" method="POST" class="mb-3" autocomplete="off">
+    <form action="{{ url_for('formAddCarro') }}" method="POST" class="mb-3" autocomplete="off">
         <div class="row">
             <div class="col">
                 <label for="marca">Marca</label>
@@ -59,7 +59,7 @@
                 <label for="puertas">Más Vendido</label>
                 <br><br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="favorito" value="Si">
+                    <input class="form-check-input" type="radio" name="favorito" value="Si" checked>
                     <label class="form-check-label" for="favorito">Si</label>
                 </div>
                 <div class="form-check form-check-inline">

@@ -15,7 +15,7 @@
     
      {{ dataInfo }}
 
-      <form action="{{ url_for('recibeActualizarCarro', idCarro = dataInfo.id ) }}" method="POST" class="mb-3" autocomplete="off" enctype="multipart/form-data">
+      <form action="{{ url_for('formActualizarCarro', idCarro = dataInfo.id ) }}" method="POST" class="mb-3" autocomplete="off" enctype="multipart/form-data">
         <input type="text" class="form-control" name="id" value="{{ dataInfo.id }}" required hidden>
         
         <div class="row">
