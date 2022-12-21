@@ -11,22 +11,22 @@
         <hr>
     </h2>
 
-    <form action="{{ url_for('formAddCarro') }}" method="POST" class="mb-3" autocomplete="off">
+    <form action="{{ url_for('formAddCarro') }}" method="POST" class="mb-3" autocomplete="off" enctype="multipart/form-data">
         <div class="row">
             <div class="col">
                 <label for="marca">Marca</label>
-                <input type="text" name="marca" class="form-control">
+                <input type="text" name="marca" class="form-control" required>
             </div>
             <div class="col">
                 <label for="modelo">Modelo</label>
-                <input type="text" name="modelo" class="form-control">
+                <input type="text" name="modelo" class="form-control" required>
             </div>
         </div>
 
         <div class="row">
             <div class="col">
                 <label for="year">Año</label>
-                <select name="year" class="form-control">
+                <select name="year" class="form-control" required>
                     <option value="">--- Seleccione el año ---</option>
                     {% for year in range(2022,2009,-1) %}
                         <option value="{{ year }}"> {{ year }}</option>
@@ -35,7 +35,7 @@
             </div>
             <div class="col">
                 <label for="color">Color</label>
-                <select name="color" class="form-control">
+                <select name="color" class="form-control" required>
                     <option value="">--- Seleccione el Color ---</option>
                     <option value="Rojo">Rojo</option>
                     <option value="Gris">Gris</option>
@@ -48,7 +48,7 @@
         <div class="row">
             <div class="col">
                 <label for="puertas">Numeros de Puertas</label>
-                <select name="puertas" class="form-control">
+                <select name="puertas" class="form-control" required>
                     <option value="">--- Seleccione las Puertas ---</option>
                     <option value="2">2</option>
                     <option value="4">4</option>
@@ -68,14 +68,14 @@
                 </div>
             </div>
         </div>
-<!----
-        <div class="row">
+
+        <div class="row mt-4">
             <div class="col">
                 <label for="foto">Foto del Carro</label>
-                <input type="file" name="foto" class="form-control-file">
+                <input type="file" name="foto" class="form-control-file" accept="image/*" required>
             </div>
         </div>
-    -->
+        <hr>
 
         <input class="button-primary mt-3 btn btn-info btn-block" type="submit" value="Guardar Registro">
     </form>

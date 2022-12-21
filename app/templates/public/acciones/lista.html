@@ -1,0 +1,62 @@
+
+<!-- {{ miData }} -->
+{% if (miData) %}
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Año</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for carro in miData %}
+            {% with urlCarro = '/static/assets/fotos_carros/' %}
+            <tr id="Registro_{{ carro.id }}">
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ carro.marca }}</td>
+                <td>{{ carro.modelo }}</td>
+                <td>{{ carro.year }}</td>
+                <td>
+                    {% if(carro.foto !="") %}
+                    <img src="{{ urlCarro }}{{ carro.foto }}" class="sin_foto_mini" alt="{{ carro.marca }}">
+                    {% else %}
+                    <img src="{{ urlCarro }}sin_foto.jpg" class="sin_foto_mini" alt="coche">
+                    {% endif %}
+                </td>
+                <td width="300">
+                    <span style="display: flex; justify-content:space-between;">
+                        <a href="{{ url_for('viewDetalleCarro', idCarro = carro.id ) }}" type="button"
+                            class="btn btn-warning btn-sm" tooltip="Ver Registro">
+                            <i class="bi bi-eye"></i>
+                            Ver
+                        </a>
+                        <a href="{{ url_for('formViewUpdate', id = carro.id ) }}" class="btn btn-info btn-sm"
+                            tooltip="Actualizar Registro">
+                            <i class="bi bi-arrow-clockwise"></i>
+                            Actualizar
+                        </a>
+                        <a href="#" onclick="eliminarCarroJavaScript('{{ carro.id }}');" class="btn btn-danger btn-sm"
+                            tooltip="Eliminar Registro">
+                            <i class="bi bi-trash3"></i>
+                            Eliminar
+                        </a>
+                    </span>
+                </td>
+            </tr>
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="row mb-5">
+    <div class="col-md-12">
+        <h3 class="text-center">No hay Carros</h3>
+    </div>
+</div>
+{% endif %}

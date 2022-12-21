@@ -2,6 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from controller.controllerCarro import *
 
 
+#Para subir archivo tipo foto al servidor
+import os
+from werkzeug.utils import secure_filename 
+
+
 #Declarando nombre de la aplicación e inicializando, crear la aplicación Flask
 app = Flask(__name__)
 application = app
@@ -32,14 +37,30 @@ def formAddCarro():
         color               = request.form['color']
         puertas             = request.form['puertas']
         favorito            = request.form['favorito']
-
-        resultData = registrarCarro(marca, modelo, year, color, puertas, favorito)
-        if(resultData ==1):
-            msg = 'Registro con exito'
-            return render_template('public/layout.html', miData = listaCarros(), msg='Formulario enviado')
+        
+        
+        #Script para recibir el archivo (foto)
+        file     = request.files['foto']
+        if(file !=''):
+            basepath = os.path.dirname (__file__) #La ruta donde se encuentra el archivo actual
+            filename = secure_filename(file.filename) #Nombre original del archivo
+        
+            #capturando extensión del archivo ejemplo: (.png, .jpg, .pdf ...etc)
+            extension           = os.path.splitext(filename)[1]
+            nuevoNombreFile     = stringAleatorio() + extension
+            
+            upload_path = os.path.join (basepath, 'static/assets/fotos_carros', nuevoNombreFile) 
+            file.save(upload_path)
+        
+            resultData = registrarCarro(marca, modelo, year, color, puertas, favorito, nuevoNombreFile)
+            if(resultData ==1):
+                msg = 'Registro con exito'
+                return render_template('public/layout.html', miData = listaCarros(), msg='Formulario enviado')
+            else:
+                return render_template('public/layout.html', msg = 'Metodo HTTP incorrecto')   
         else:
-            return render_template('public/layout.html', msg = 'Metodo HTTP incorrecto')   
-    
+            return render_template('public/layout.html', msg = 'Debe cargar una foto')
+            
 
 @app.route('/form-update-carro/<string:id>', methods=['GET','POST'])
 def formViewUpdate(id):
@@ -81,13 +102,20 @@ def  formActualizarCarro(idCarro):
         puertas         = request.form['puertas']
         favorito        = request.form['favorito']
         
-        resultData = recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, idCarro)
+        #Script para recibir el archivo (foto)
+        if(request.files['foto']):
+            file     = request.files['foto']
+            fotoForm = recibeFoto(file)
+            resultData = recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, fotoForm, idCarro)
+        else:
+            fotoCarro  ='sin_foto.jpg'
+            resultData = recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, fotoCarro, idCarro)
+
         if(resultData ==1):
             return render_template('public/layout.html', miData = listaCarros())
         else:
             msg ='No se actualizo el registro'
             return render_template('public/layout.html', miData = listaCarros(), mensaje = msg, tipo_mensaje = 0)
-               
 
 
 #Eliminar carro
@@ -100,11 +128,29 @@ def formViewBorrarCarro():
 
         if resultData ==1:
             #Nota: retorno solo un json y no una vista para evitar refescar la vista
-            return jsonify(data = ["respuesta", 1])
+            return jsonify([1])
+            #return jsonify(["respuesta", 1])
         else: 
-            return jsonify(data = ["respuesta", 0])
+            return jsonify([0])
 
+
+
+def recibeFoto(file):
+    print(file)
+    basepath = os.path.dirname (__file__) #La ruta donde se encuentra el archivo actual
+    filename = secure_filename(file.filename) #Nombre original del archivo
+
+    #capturando extensión del archivo ejemplo: (.png, .jpg, .pdf ...etc)
+    extension           = os.path.splitext(filename)[1]
+    nuevoNombreFile     = stringAleatorio() + extension
+    #print(nuevoNombreFile)
         
+    upload_path = os.path.join (basepath, 'static/assets/fotos_carros', nuevoNombreFile) 
+    file.save(upload_path)
+
+    return nuevoNombreFile
+
+       
   
   
 #Redireccionando cuando la página no existe

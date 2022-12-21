@@ -1,5 +1,6 @@
-
+from random import sample
 from conexionBD import *  #Importando conexion BD
+
 
 
 #Creando una funcion para obtener la lista de carros.
@@ -29,12 +30,12 @@ def updateCarro(id=''):
     
     
     
-def registrarCarro(marca='', modelo='', year='', color='', puertas='', favorito=''):       
+def registrarCarro(marca='', modelo='', year='', color='', puertas='', favorito='', nuevoNombreFile=''):       
         conexion_MySQLdb = connectionBD()
         cursor           = conexion_MySQLdb.cursor(dictionary=True)
             
-        sql         = ("INSERT INTO carros(marca, modelo, year, color, puertas, favorito) VALUES (%s, %s, %s, %s, %s, %s)")
-        valores     = (marca, modelo, year, color, puertas, favorito)
+        sql         = ("INSERT INTO carros(marca, modelo, year, color, puertas, favorito, foto) VALUES (%s, %s, %s, %s, %s, %s, %s)")
+        valores     = (marca, modelo, year, color, puertas, favorito, nuevoNombreFile)
         cursor.execute(sql, valores)
         conexion_MySQLdb.commit()
         
@@ -61,7 +62,7 @@ def detallesdelCarro(idCarro):
     
 
 
-def  recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, idCarro):
+def  recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, nuevoNombreFile, idCarro):
         conexion_MySQLdb = connectionBD()
         cur = conexion_MySQLdb.cursor(dictionary=True)
         cur.execute("""
@@ -72,9 +73,10 @@ def  recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, idCarr
                 year    = %s,
                 color   = %s,
                 puertas = %s,
-                favorito= %s
+                favorito= %s,
+                foto    = %s
             WHERE id=%s
-            """, (marca,modelo, year, color, puertas, favorito, idCarro ))
+            """, (marca,modelo, year, color, puertas, favorito, nuevoNombreFile,  idCarro))
         conexion_MySQLdb.commit()
         
         cur.close() #cerrando conexion de la consulta sql
@@ -93,3 +95,14 @@ def eliminarCarro(idCarro=''):
     conexion_MySQLdb.commit()
     #print(cur.rowcount )
     return cur.rowcount 
+
+
+#Crear un string aleatorio para renombrar la foto 
+# y evitar que exista una foto con el mismo nombre
+def stringAleatorio():
+    string_aleatorio = "0123456789abcdefghijklmnopqrstuvwxyz_"
+    longitud         = 20
+    secuencia        = string_aleatorio.upper()
+    resultado_aleatorio  = sample(secuencia, longitud)
+    string_aleatorio     = "".join(resultado_aleatorio)
+    return string_aleatorio

@@ -12,9 +12,6 @@
     </h2>
 
     {% if (dataInfo) %}
-    
-     {{ dataInfo }}
-
       <form action="{{ url_for('formActualizarCarro', idCarro = dataInfo.id ) }}" method="POST" class="mb-3" autocomplete="off" enctype="multipart/form-data">
         <input type="text" class="form-control" name="id" value="{{ dataInfo.id }}" required hidden>
         
@@ -83,8 +80,22 @@
             </div>
         </div>
 
-
-        <input class="button-primary mt-3 btn btn-info btn-block" type="submit" value="Guardar Registro">
+        <div class="row">
+            {% set urlCarro = '/static/assets/fotos_carros/' %}
+            <div class="col-md-6">
+                {% if(dataInfo.foto !="") %}
+                        <img src="{{ urlCarro }}{{ dataInfo.foto }}" class="foto_update" alt="{{ dataInfo.marca }}">
+                    {% else %}
+                        <img src="{{ urlCarro }}sin_foto.jpg" class="foto_update" alt="coche">
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <label for="foto">Cambiar Foto del Carro</label>
+                <input type="file" name="foto" class="form-control-file" accept="image/*">
+            </div>
+        </div>
+        <hr>
+        <input class="button-primary mt-3 btn btn-info btn-block" type="submit" value="Guardar Actualización">
     </form>
 
       {% else %}

@@ -39,6 +39,9 @@ thead{
 .card{
     margin: 0 auto !important;
 }
+.card-body{
+    background-color: #f2f4f8;
+}
 .sin_foto{
     width: 200px;
     margin: 0 auto;
@@ -50,7 +53,6 @@ thead{
 }
 .card-img-top{
     margin: 0 auto;
-    width: 200px;
 }
 .table>tbody {
     vertical-align: baseline !important;
@@ -60,4 +62,16 @@ input{
 }
 .form-check-inline{
     float: left;
+}
+.bold-800{
+    font-weight: 800;
+}
+.foto_update{
+    max-width: 250px;
+}
+input[type='file']{
+    float: left;
+}
+.btn-block{
+    width: 50%;
 }

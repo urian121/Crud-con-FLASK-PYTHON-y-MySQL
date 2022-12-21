@@ -15,9 +15,9 @@
     
     <!-- {{ infoCarro }} -->
 
-      {% set urlCarro = '/static/assets/fotos_carros/' %}
-    <div class="card" style="width: 25rem;">
 
+    <div class="card" style="width: 25rem;">
+      {% set urlCarro = '/static/assets/fotos_carros/' %}
         {% if(infoCarro.foto) %}
           <img src="{{ urlCarro }}{{ infoCarro.foto }}" class="card-img-top" alt="coche">
         {% else %}
