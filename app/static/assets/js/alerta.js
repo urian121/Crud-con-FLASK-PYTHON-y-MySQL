@@ -1,9 +1,8 @@
 
 
 /** Alerta personalizadas */
-function mensajeAlerta(tipo, msg) {
-    let text = document.querySelector('.text-2').textContent = `
-            El Registro fue eliminado 😀 `;
+function mensajeAlerta(msg, tipo_msg='') {
+    let text  = document.querySelector('.text-2').textContent = `${msg}`;
 
     const toast    = document.querySelector(".toast");
         closeIcon  = document.querySelector(".close"),
@@ -20,4 +19,14 @@ function mensajeAlerta(tipo, msg) {
     closeIcon.addEventListener("click", () => {
         toast.classList.remove("active");
     });
+}
+
+
+/**Ocultando la alerta que se dispara sin el JavaScript */
+let verificar_clase = $(".mi_alerta").hasClass("active")
+console.log(verificar_clase);
+if(verificar_clase ==true){
+    setTimeout(() => {
+        $(".mi_alerta").removeClass("active");
+    }, 5000);
 }

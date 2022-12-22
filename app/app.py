@@ -11,6 +11,8 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 application = app
 
+msg  =''
+tipo =''
 
 
 #Creando mi decorador para el home, el cual retornara la Lista de Carros
@@ -29,7 +31,6 @@ def addCarro():
 #Registrando nuevo carro
 @app.route('/carro', methods=['POST'])
 def formAddCarro():
-    msg =''
     if request.method == 'POST':
         marca               = request.form['marca']
         modelo              = request.form['modelo']
@@ -39,41 +40,30 @@ def formAddCarro():
         favorito            = request.form['favorito']
         
         
-        #Script para recibir el archivo (foto)
-        file     = request.files['foto']
-        if(file !=''):
-            basepath = os.path.dirname (__file__) #La ruta donde se encuentra el archivo actual
-            filename = secure_filename(file.filename) #Nombre original del archivo
-        
-            #capturando extensión del archivo ejemplo: (.png, .jpg, .pdf ...etc)
-            extension           = os.path.splitext(filename)[1]
-            nuevoNombreFile     = stringAleatorio() + extension
-            
-            upload_path = os.path.join (basepath, 'static/assets/fotos_carros', nuevoNombreFile) 
-            file.save(upload_path)
-        
+        if(request.files['foto'] !=''):
+            file     = request.files['foto'] #recibiendo el archivo
+            nuevoNombreFile = recibeFoto(file) #Llamado la funcion que procesa la imagen
             resultData = registrarCarro(marca, modelo, year, color, puertas, favorito, nuevoNombreFile)
             if(resultData ==1):
-                msg = 'Registro con exito'
-                return render_template('public/layout.html', miData = listaCarros(), msg='Formulario enviado')
+                mivar =''
+                return render_template('public/layout.html', miData = listaCarros(), mivar='holaaaaa', msg='El Registro fue un éxito', tipo=1)
             else:
-                return render_template('public/layout.html', msg = 'Metodo HTTP incorrecto')   
+                return render_template('public/layout.html', msg = 'Metodo HTTP incorrecto', tipo=1)   
         else:
-            return render_template('public/layout.html', msg = 'Debe cargar una foto')
+            return render_template('public/layout.html', msg = 'Debe cargar una foto', tipo=1)
             
+
 
 @app.route('/form-update-carro/<string:id>', methods=['GET','POST'])
 def formViewUpdate(id):
-    msg =''
     if request.method == 'GET':
         resultData = updateCarro(id)
         if resultData:
             return render_template('public/acciones/update.html',  dataInfo = resultData)
         else:
-            msg="No existe el Carro"
-            return render_template('public/layout.html', miData = listaCarros(), mensaje = msg, tipo_msg = 0)
+            return render_template('public/layout.html', miData = listaCarros(), msg='No existe el carro', tipo= 1)
     else:
-        return render_template('public/layout.html', miData = listaCarros())          
+        return render_template('public/layout.html', miData = listaCarros(), msg = 'Metodo HTTP incorrecto', tipo=1)          
  
    
   
@@ -81,19 +71,17 @@ def formViewUpdate(id):
 def viewDetalleCarro(idCarro):
     msg =''
     if request.method == 'GET':
-        resultData = detallesdelCarro(idCarro)
+        resultData = detallesdelCarro(idCarro) #Funcion que almacena los detalles del carro
         
         if resultData:
-            return render_template('public/acciones/view.html', infoCarro = resultData)
+            return render_template('public/acciones/view.html', infoCarro = resultData, msg='Detalles del Carro', tipo=1)
         else:
-            msg="No exite el Carro"
-            return render_template('public/acciones/layout.html', mensaje = msg, tipo_mensaje = 0)
+            return render_template('public/acciones/layout.html', msg='No existe el Carro', tipo=1)
     return redirect(url_for('inicio'))
     
 
 @app.route('/actualizar-carro/<string:idCarro>', methods=['POST'])
 def  formActualizarCarro(idCarro):
-    msg=''
     if request.method == 'POST':
         marca           = request.form['marca']
         modelo          = request.form['modelo']
@@ -112,19 +100,19 @@ def  formActualizarCarro(idCarro):
             resultData = recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, fotoCarro, idCarro)
 
         if(resultData ==1):
-            return render_template('public/layout.html', miData = listaCarros())
+            return render_template('public/layout.html', miData = listaCarros(), msg='Datos del carro actualizados', tipo=1)
         else:
             msg ='No se actualizo el registro'
-            return render_template('public/layout.html', miData = listaCarros(), mensaje = msg, tipo_mensaje = 0)
+            return render_template('public/layout.html', miData = listaCarros(), msg='No se pudo actualizar', tipo=1)
 
 
 #Eliminar carro
 @app.route('/borrar-carro', methods=['GET', 'POST'])
 def formViewBorrarCarro():
-    
     if request.method == 'POST':
-        idCarro    = request.form['id']
-        resultData = eliminarCarro(idCarro)
+        idCarro         = request.form['id']
+        nombreFoto      = request.form['nombreFoto']
+        resultData      = eliminarCarro(idCarro, nombreFoto)
 
         if resultData ==1:
             #Nota: retorno solo un json y no una vista para evitar refescar la vista
@@ -132,6 +120,27 @@ def formViewBorrarCarro():
             #return jsonify(["respuesta", 1])
         else: 
             return jsonify([0])
+
+
+
+
+def eliminarCarro(idCarro='', nombreFoto=''):
+        
+    conexion_MySQLdb = connectionBD() #Hago instancia a mi conexion desde la funcion
+    cur              = conexion_MySQLdb.cursor(dictionary=True)
+    
+    cur.execute('DELETE FROM carros WHERE id=%s', (idCarro,))
+    conexion_MySQLdb.commit()
+    resultado_eliminar = cur.rowcount #retorna 1 o 0
+    #print(resultado_eliminar)
+    
+    basepath = os.path.dirname (__file__) #C:\xampp\htdocs\localhost\Crud-con-FLASK-PYTHON-y-MySQL\app
+    url_File = os.path.join (basepath, 'static/assets/fotos_carros', nombreFoto)
+    os.remove(url_File) #Borrar foto desde la carpeta
+    #os.unlink(url_File) #Otra forma de borrar archivos en una carpeta
+    
+
+    return resultado_eliminar
 
 
 

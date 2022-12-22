@@ -38,13 +38,12 @@ def registrarCarro(marca='', modelo='', year='', color='', puertas='', favorito=
         valores     = (marca, modelo, year, color, puertas, favorito, nuevoNombreFile)
         cursor.execute(sql, valores)
         conexion_MySQLdb.commit()
-        
         cursor.close() #Cerrando conexion SQL
         conexion_MySQLdb.close() #cerrando conexion de la BD
         
-        print(cursor.rowcount, "registro Insertado")
-        print("1 registro insertado, id", cursor.lastrowid)
-        return cursor.rowcount
+        resultado_insert = cursor.rowcount #retorna 1 o 0
+        ultimo_id        = cursor.lastrowid #retorna el id del ultimo registro
+        return resultado_insert
   
 
 def detallesdelCarro(idCarro):
@@ -53,14 +52,12 @@ def detallesdelCarro(idCarro):
         
         cursor.execute("SELECT * FROM carros WHERE id ='%s'" % (idCarro,))
         resultadoQuery = cursor.fetchone()
-        
         cursor.close() #cerrando conexion de la consulta sql
         conexion_MySQLdb.close() #cerrando conexion de la BD
         
         return resultadoQuery
     
     
-
 
 def  recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, nuevoNombreFile, idCarro):
         conexion_MySQLdb = connectionBD()
@@ -81,21 +78,9 @@ def  recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, nuevoN
         
         cur.close() #cerrando conexion de la consulta sql
         conexion_MySQLdb.close() #cerrando conexion de la BD
-        return cur.rowcount
+        resultado_update = cur.rowcount #retorna 1 o 0
+        return resultado_update
  
-
-
-
-def eliminarCarro(idCarro=''):
-        
-    conexion_MySQLdb = connectionBD() #Hago instancia a mi conexion desde la funcion
-    cur              = conexion_MySQLdb.cursor(dictionary=True)
-    
-    cur.execute('DELETE FROM carros WHERE id=%s', (idCarro,))
-    conexion_MySQLdb.commit()
-    #print(cur.rowcount )
-    return cur.rowcount 
-
 
 #Crear un string aleatorio para renombrar la foto 
 # y evitar que exista una foto con el mismo nombre

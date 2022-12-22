@@ -1,12 +1,31 @@
 
+<!---Alerta que se dispara con JavaScript-->
 <div class="toast">
     <div class="toast-content">
         <i class="bi bi-check check"></i>
         <div class="message">
-            <span class="text text-1">Felicitaciones </span>
+            <span class="text text-1">Felicitaciones..! </span>
             <span class="text text-2"></span>
         </div>
     </div>
     <i class="bi bi-x-lg close"></i>
     <div class="progress active"></div>
 </div>
+
+
+
+
+<!---Alerta que se dispara sin JavaScript-->
+{% if (tipo==1) %}
+<div id='alert' class="mi_alerta toast active">
+    <div class="toast-content">
+        <i class="bi bi-check check"></i>
+        <div class="message">
+            <span class="text text-1">Genial..!</span>
+            <span class="text text-2">{{ msg }}</span>
+        </div>
+    </div>
+    <i class="bi bi-x-lg close"></i>
+    <div class="progress active"></div>
+</div>
+{% endif %}

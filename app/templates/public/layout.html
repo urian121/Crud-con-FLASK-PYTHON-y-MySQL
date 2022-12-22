@@ -29,7 +29,7 @@
     </div>
 
     {% block body %}
-    
+
     <div class="row">
       <div class="col-md-12">
         <a href="{{ url_for('addCarro') }}" title="Registrar nuevo Carro"
@@ -58,18 +58,21 @@
   <script src="{{ url_for('static', filename ='assets/js/alerta.js') }}"></script>
   <script>
     function eliminarCarroJavaScript(id) {
+      const idR = document.querySelector('#id_'+ id);
+      nombreFoto = idR.dataset.foto;
+
       let li = document.querySelector('#Registro_' + id);
 
       var urlForm = "{{ url_for('formViewBorrarCarro') }}";
       $.ajax({
         type: "POST",
-        data: { id },
+        data: { id, nombreFoto },
         url: urlForm,
         success: function (resp) {
           console.log(resp)
           if (resp == 1) {
             li.remove(); //remuevo el registro desde la lista
-            mensajeAlerta(tipo=1, msg='Registro Eliminado'); 
+            mensajeAlerta(msg='Registro Eliminado con éxito.', tipo=1); 
           } else {
             console.log('Error al intentar borrar el carro ');
           }

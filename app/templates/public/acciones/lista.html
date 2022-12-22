@@ -40,7 +40,7 @@
                             <i class="bi bi-arrow-clockwise"></i>
                             Actualizar
                         </a>
-                        <a href="#" onclick="eliminarCarroJavaScript('{{ carro.id }}');" class="btn btn-danger btn-sm"
+                        <a href="#" id="id_{{ carro.id }}" data-foto="{{ carro.foto }}" onclick="eliminarCarroJavaScript('{{ carro.id }}');" class="btn btn-danger btn-sm"
                             tooltip="Eliminar Registro">
                             <i class="bi bi-trash3"></i>
                             Eliminar

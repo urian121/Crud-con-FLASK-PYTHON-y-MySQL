@@ -23,14 +23,3 @@
 # (env)$ deactivate   Para desactivar nuestro entono virtual
  
 # Comando para actualizar pip: python -m pip install --upgrade pip
-
-# https://www.youtube.com/watch?v=E0Ys_ntvshY   y   https://hackersandslackers.com/configure-flask-applications/
-# Variables de Entorno con Python (.env) | python-dotenv | python-decouple
-# He instalado pip install python-dotenv  para crear entornos de variables
-# pip install python-decouple
-
-
-# flask run
-Queremos instalar el paquete python-dotenv para poder almacenar nuestras variables MySQL fuera de nuestro código.
-
-pip install python-dotenv

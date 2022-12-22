@@ -63,6 +63,9 @@ input{
 .form-check-inline{
     float: left;
 }
+.bold{
+    font-weight: bold;
+}
 .bold-800{
     font-weight: 800;
 }
@@ -74,4 +77,11 @@ input[type='file']{
 }
 .btn-block{
     width: 50%;
+}
+h2{
+    font-weight: bold;
+    color: darkcyan;
+}
+.bi-arrow-left-circle:hover{
+    color: #333;
 }
