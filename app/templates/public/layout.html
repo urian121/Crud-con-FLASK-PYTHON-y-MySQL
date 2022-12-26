@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/custom_alert.css') }}">
 </head>
 
-<body>
+<body class="loader">
 
   {% include 'public/navbar.html' %}
   {% include 'public/alerta.html' %}
@@ -56,6 +56,7 @@
     crossorigin="anonymous"></script>
   <script src="{{ url_for('static', filename ='assets/js/bootstrap.min.js') }}"></script>
   <script src="{{ url_for('static', filename ='assets/js/alerta.js') }}"></script>
+  <script src="{{ url_for('static', filename ='assets/js/loader.js') }}"></script>
   <script>
     function eliminarCarroJavaScript(id) {
       const idR = document.querySelector('#id_'+ id);
