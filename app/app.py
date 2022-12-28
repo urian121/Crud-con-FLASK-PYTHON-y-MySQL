@@ -45,8 +45,7 @@ def formAddCarro():
             nuevoNombreFile = recibeFoto(file) #Llamado la funcion que procesa la imagen
             resultData = registrarCarro(marca, modelo, year, color, puertas, favorito, nuevoNombreFile)
             if(resultData ==1):
-                mivar =''
-                return render_template('public/layout.html', miData = listaCarros(), mivar='holaaaaa', msg='El Registro fue un éxito', tipo=1)
+                return render_template('public/layout.html', miData = listaCarros(), msg='El Registro fue un éxito', tipo=1)
             else:
                 return render_template('public/layout.html', msg = 'Metodo HTTP incorrecto', tipo=1)   
         else:

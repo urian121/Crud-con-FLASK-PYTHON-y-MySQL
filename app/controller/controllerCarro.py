@@ -8,7 +8,7 @@ def listaCarros():
     conexion_MySQLdb = connectionBD() #creando mi instancia a la conexion de BD
     cur      = conexion_MySQLdb.cursor(dictionary=True)
 
-    querySQL = f"SELECT * FROM carros ORDER BY id DESC"
+    querySQL = "SELECT * FROM carros ORDER BY id DESC"
     cur.execute(querySQL) 
     resultadoBusqueda = cur.fetchall() #fetchall () Obtener todos los registros
     totalBusqueda = len(resultadoBusqueda) #Total de busqueda
