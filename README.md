@@ -1,8 +1,8 @@
-# PASO 1, Crear mi entorno virtual
-#  virtualenv -p python3 env o python3 -m venv env
+` PASO 1, Crear mi entorno virtual`
+` virtualenv -p python3 env o python3 -m venv env `
 
-# PASO 2, Activar el entorno virtual ejecutando;
-#  . env/Scripts/activate  
+` PASO 2, Activar el entorno virtual ejecutando`
+`  . env/Scripts/activate  `
  
 # PASO 3, Ya dentro del entorno virtual instalar flask
 #  pip install flask
