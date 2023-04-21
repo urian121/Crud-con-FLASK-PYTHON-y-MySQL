@@ -1,25 +1,25 @@
-` PASO 1, Crear mi entorno virtual`
-` virtualenv -p python3 env o python3 -m venv env `
+## CRUD CON PYTHON 🐍 Y FLASK
 
-` PASO 2, Activar el entorno virtual ejecutando`
-`  . env/Scripts/activate  `
- 
-` PASO 3, Ya dentro del entorno virtual instalar flask`
-`  pip install flask`
 
-` PASO 4, Instalar Python MySQL Connector, es una bibliote (Driver) para conectar Python con MySQL`
-` pip install mysql-connector-python`
+### Acontinuación muestro algunos pasos para hacer correr el proyecto:
 
-` PASO 5, Lista todos mis paquetes`
-` pip list  o pip freeze`
+##### PASO 1: <p>Crear mi entorno virtual
+` virtualenv -p python3 env o  python3 -m venv env`</p>
 
-` Crear/Actualizar el fichero requirements.txt:`
-` pip freeze > requirements.txt`
+##### PASO 2: Activar el entorno virtual ejecutando
+` . env/Scripts/activate `
 
-` IMPORTANTE, para correr el proyecto solo debes ejecutar el archivo`
-` requirements.txt con el comando pip install -r requirements.txt en el `
-` mismo se encuentran todas las dependecias del proyecto.`
+##### PASO 3: <p>Ya dentro del entorno virtual puedes instalar flask con el comando:  
+</p>`pip install flask`
 
-` (env)$ deactivate   Para desactivar nuestro entono virtual`
- 
-` Comando para actualizar pip: python -m pip install --upgrade pip`
+##### PASO 4: <p>Instalar Python MySQL Connector, es una bibliote (Driver) para conectar Python con MySQL, instalar con el siguiente comando:
+</p>` pip install mysql-connector-python`
+
+
+##### IMPORTANTE : <p>Puedes solo crear tu entorno virtual y posicionarte en el mismo, luego ejecutar el siguiente comando:  `pip install -r requirements.txt` en el  mismo se encuentran todas las dependecias del proyecto.</p>
+
+![](https://raw.githubusercontent.com/urian121/imagenes-proyectos-github/master/crud-pytho-con-flask.png)
+
+<p>
+Muchas gracias por tu apoyo.
+</p>
