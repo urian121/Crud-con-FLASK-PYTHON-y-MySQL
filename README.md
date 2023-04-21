@@ -16,7 +16,9 @@
 </p>` pip install mysql-connector-python`
 
 
-##### IMPORTANTE : <p>Puedes solo crear tu entorno virtual y posicionarte en el mismo, luego ejecutar el siguiente comando:  `pip install -r requirements.txt` en el  mismo se encuentran todas las dependecias del proyecto.</p>
+##### IMPORTANTE : <p>Puedes solo crear tu entorno virtual y posicionarte en el mismo, luego ejecutar el siguiente comando:  </p> 
+`pip install -r requirements.txt`
+<p>en el  mismo se encuentran todas las dependecias del proyecto.</p>
 
 ![](https://raw.githubusercontent.com/urian121/imagenes-proyectos-github/master/crud-pytho-con-flask.png)
 
