@@ -58,29 +58,42 @@ def detallesdelCarro(idCarro):
         return resultadoQuery
     
     
+def recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, foto_carro, idCarro):
+    try:
+        with connectionBD() as conexion_MySQLdb:
+            with conexion_MySQLdb.cursor(dictionary=True) as cur:
+                # Base de la consulta SQL
+                query_base = """
+                    UPDATE carros
+                    SET 
+                        marca = %s,
+                        modelo = %s,
+                        year = %s,
+                        color = %s,
+                        puertas = %s,
+                        favorito = %s
+                """
+                params = [marca, modelo, year, color, puertas, favorito]
 
-def  recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, nuevoNombreFile, idCarro):
-        conexion_MySQLdb = connectionBD()
-        cur = conexion_MySQLdb.cursor(dictionary=True)
-        cur.execute("""
-            UPDATE carros
-            SET 
-                marca   = %s,
-                modelo  = %s,
-                year    = %s,
-                color   = %s,
-                puertas = %s,
-                favorito= %s,
-                foto    = %s
-            WHERE id=%s
-            """, (marca,modelo, year, color, puertas, favorito, nuevoNombreFile,  idCarro))
-        conexion_MySQLdb.commit()
-        
-        cur.close() #cerrando conexion de la consulta sql
-        conexion_MySQLdb.close() #cerrando conexion de la BD
-        resultado_update = cur.rowcount #retorna 1 o 0
-        return resultado_update
- 
+                # Agregar campo de foto solo si se envió
+                if foto_carro:
+                    query_base += ", foto = %s"
+                    params.append(foto_carro)
+
+                # Condición WHERE
+                query_base += " WHERE id = %s"
+                params.append(idCarro)
+
+                # Ejecutar la consulta
+                cur.execute(query_base, params)
+                conexion_MySQLdb.commit()
+
+                # Retornar el número de filas afectadas
+                return cur.rowcount or 0
+    except Exception as e:
+        print(f"Ocurrió un error en recibeActualizarCarro: {e}")
+        return 0
+    
 
 #Crear un string aleatorio para renombrar la foto 
 # y evitar que exista una foto con el mismo nombre

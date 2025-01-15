@@ -89,19 +89,20 @@ def  formActualizarCarro(idCarro):
         puertas         = request.form['puertas']
         favorito        = request.form['favorito']
         
-        #Script para recibir el archivo (foto)
-        if(request.files['foto']):
-            file     = request.files['foto']
-            fotoForm = recibeFoto(file)
-            resultData = recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, fotoForm, idCarro)
-        else:
-            fotoCarro  ='sin_foto.jpg'
-            resultData = recibeActualizarCarro(marca, modelo, year, color, puertas, favorito, fotoCarro, idCarro)
+        # Verificar si se envió una foto
+        foto_carro = None
+        if 'foto' in request.files and request.files['foto'].filename != '':
+            file = request.files['foto']
+            foto_carro = recibeFoto(file)
 
+        # Llamar a la función para actualizar el carro
+        resultData = recibeActualizarCarro(
+            marca, modelo, year, color, puertas, favorito, foto_carro, idCarro
+        )
+        
         if(resultData ==1):
             return render_template('public/layout.html', miData = listaCarros(), msg='Datos del carro actualizados', tipo=1)
         else:
-            msg ='No se actualizo el registro'
             return render_template('public/layout.html', miData = listaCarros(), msg='No se pudo actualizar', tipo=1)
 
 
@@ -144,7 +145,6 @@ def eliminarCarro(idCarro='', nombreFoto=''):
 
 
 def recibeFoto(file):
-    print(file)
     basepath = os.path.dirname (__file__) #La ruta donde se encuentra el archivo actual
     filename = secure_filename(file.filename) #Nombre original del archivo
 
